@@ -50,60 +50,61 @@
         const database = getDatabase(app);
 
         document.addEventListener('DOMContentLoaded', () => {
-            const gallery = document.querySelector('.row');
-            const btnContainer = document.getElementById('myBtnContainer');
+    const gallery = document.querySelector('.row');
+    const btnContainer = document.getElementById('myBtnContainer');
 
-            async function loadImages() {
-                const storageRef = ref(storage, 'images');
-                try {
-                    const res = await listAll(storageRef);
-                    gallery.innerHTML = '';
+    async function loadImages() {
+        const storageRef = ref(storage, 'images');
+        try {
+            const res = await listAll(storageRef);
+            gallery.innerHTML = '';
 
-                    for (const item of res.items) {
-                        const url = await getDownloadURL(item);
-                        const img = document.createElement('img');
-                        img.src = url;
-                        img.style.width = '100%';
+            for (const item of res.items) {
+                const url = await getDownloadURL(item);
+                const img = document.createElement('img');
+                img.src = url;
+                img.style.width = '100%';
 
-                        const content = document.createElement('div');
-                        content.className = 'content';
-                        content.appendChild(img);
+                const content = document.createElement('div');
+                content.className = 'content';
+                content.appendChild(img);
 
-                        const column = document.createElement('div');
-                        column.className = 'column';
-                        column.appendChild(content);
+                const column = document.createElement('div');
+                column.className = 'column';
+                column.appendChild(content);
 
-                        gallery.appendChild(column);
-                    }
-
-                    filterSelection('all'); // Show all images by default
-                } catch (error) {
-                    console.error('Error loading images:', error);
-                }
+                gallery.appendChild(column);
             }
 
-            // Filter images by category
-            function filterSelection(c) {
-                const x = document.getElementsByClassName("column");
-                if (c == "all") c = "";
-                for (let i = 0; i < x.length; i++) {
-                    x[i].style.display = x[i].className.indexOf(c) > -1 ? "block" : "none";
-                }
-            }
+            filterSelection('all'); // Show all images by default
+        } catch (error) {
+            console.error('Error loading images:', error);
+        }
+    }
 
-            // Add active class to the current button (highlight it)
-            const btns = btnContainer.getElementsByClassName("btn");
-            for (let i = 0; i < btns.length; i++) {
-                btns[i].addEventListener("click", function() {
-                    const current = document.getElementsByClassName("active");
-                    if (current.length > 0) current[0].classList.remove("active");
-                    this.classList.add("active");
-                    filterSelection(this.textContent.toLowerCase());
-                });
-            }
+    // Filter images by category
+    function filterSelection(c) {
+        const x = document.getElementsByClassName("column");
+        if (c == "all") c = "";
+        for (let i = 0; i < x.length; i++) {
+            x[i].style.display = x[i].className.indexOf(c) > -1 ? "block" : "none";
+        }
+    }
 
-            loadImages(); // Load images on page load
+    // Add active class to the current button (highlight it)
+    const btns = btnContainer.getElementsByClassName("btn");
+    for (let i = 0; i < btns.length; i++) {
+        btns[i].addEventListener("click", function() {
+            const current = document.getElementsByClassName("active");
+            if (current.length > 0) current[0].classList.remove("active");
+            this.classList.add("active");
+            filterSelection(this.textContent.toLowerCase());
         });
+    }
+
+    loadImages(); // Load images on page load
+});
+
     </script>
 </head>
 <body class="html not-front not-logged-in no-sidebars page-photo-gallery i18n-en">
@@ -223,7 +224,7 @@
     <!-- Navbar end -->
     <div class="container">
         <div id="myBtnContainer" class="mb-4">
-            <button class="btn active" onclick="filterSelection('all')">Show All</button>
+            
         </div>
     
         <div class="row">
